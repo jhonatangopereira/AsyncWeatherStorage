@@ -1,0 +1,12 @@
+# Python project
+*.pyc
+*.pyo
+
+# PyCharm
+.idea
+
+# Virtualenv
+.venv
+
+# .env file
+.env
