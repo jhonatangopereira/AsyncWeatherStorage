@@ -62,9 +62,20 @@ def test_collect_weather(monkeypatch):
     assert response.status_code == 200
     assert response.json()["message"] == "Weather data collected successfully"
 
+    # Verificar se os dados foram inseridos pela rota
+    response = client.get("/weather-data")
+    assert response.status_code == 200
+    data = response.json().get("data")
+    assert isinstance(data, list)
+
     # Verifique se os dados foram realmente inseridos no MongoDB
     data = weather_collection.find({"id": request_id})
     assert len(list(data)) > 0
+
+    # Vefique se é possível coletar dados para o mesmo request_id
+    response = client.post(f"/collect-weather/{request_id}")
+    assert response.status_code == 200
+    assert response.json()["message"] == "Weather data already collected for this request_id"
 
 def test_get_collection_progress():
     request_id = 1
@@ -79,3 +90,8 @@ def test_get_collection_progress():
     assert response.status_code == 200
     assert "percentage_progress" in response.json()
     assert response.json()["message"] == "Collection progress retrieved successfully"
+
+    # Teste para um request_id que não existe
+    response = client.get("/get-collection-progress/999")
+    assert response.status_code == 200
+    assert response.json()["message"] == "Request ID not found"
