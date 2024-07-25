@@ -9,10 +9,10 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Install additional dependencies for testing
-RUN pip install pytest httpx
+RUN pip install pytest pytest-cov httpx
 
 # Copy the rest of the application code
 COPY . .
 
 # Command to run the tests
-CMD ["pytest", "--tb=short", "-p", "no:warnings"]
+CMD ["pytest", "--tb=short", "-p", "no:warnings", "--cov=app", "--cov-report=term-missing"]

@@ -72,14 +72,9 @@ async def collect_weather(request_id: int):
         # Primeiro, verificar se os dados já foram coletados
         if weather_collection.find_one({"id": request_id}):
             return {"message": "Weather data already collected for this request_id"}
-        # Extrair a hora atual
-        now = datetime.now()
         for idx, city_id in enumerate(cities):
             if idx % 60 == 0:
-                # Calcule o tempo restante até o próximo minuto
-                current_second = now.second
-                remaining_seconds = 60 - current_second
-                await asyncio.sleep(remaining_seconds)
+                await asyncio.sleep(60)
             data = await fetch_weather(city_id)
             # Extrair os dados necessários
             city_id, temperature, humidity = data["id"], data["main"]["temp"], data["main"]["humidity"]

@@ -24,7 +24,7 @@ services:
       context: .
       dockerfile: Dockerfile.test
     container_name: fastapi_test
-    command: ["sh", "-c", "pytest app/test_app.py"]
+    command: ["sh", "-c", "pytest --tb=short -p no:warnings --cov=app --cov-report=term-missing"]
     depends_on:
       - app
     environment:

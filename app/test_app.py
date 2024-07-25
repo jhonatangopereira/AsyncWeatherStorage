@@ -92,6 +92,6 @@ def test_get_collection_progress():
     assert response.json()["message"] == "Collection progress retrieved successfully"
 
     # Teste para um request_id que não existe
-    response = client.get("/get-collection-progress/999")
+    response = client.get("/get-collection-progress/99999")
     assert response.status_code == 200
     assert response.json()["message"] == "Request ID not found"
