@@ -1,0 +1,34 @@
+version: "3.12"
+
+services:
+  app:
+    build: .
+    container_name: fastapi_app
+    ports:
+      - "8000:80"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URL=mongodb://mongo
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo-data:/data/db
+  
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: fastapi_test
+    command: ["sh", "-c", "pytest app/test_app.py"]
+    depends_on:
+      - app
+    environment:
+      - MONGO_URL=mongodb://mongo
+
+volumes:
+  mongo-data:

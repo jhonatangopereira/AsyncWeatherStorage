@@ -1,0 +1,18 @@
+# Use a base image with Python
+FROM python:3.10
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the requirements file and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install additional dependencies for testing
+RUN pip install pytest httpx
+
+# Copy the rest of the application code
+COPY . .
+
+# Command to run the tests
+CMD ["pytest", "--tb=short", "-p", "no:warnings"]
